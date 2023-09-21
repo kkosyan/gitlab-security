@@ -22,6 +22,6 @@ class MembersExtractor:
         gl = self._auth()
         projects = gl.projects.list(get_all=True)
         return [
-            (project.id, project.path_with_namespace, self._get_members_names(project=project))
+            (project.id, project.path_with_namespace, sorted(self._get_members_names(project=project)))
             for project in projects
         ]
