@@ -1,0 +1,9 @@
+[default]
+gitlab_url=''
+gitlab_token=''
+report_dir=''
+
+[testing]
+gitlab_url=''
+gitlab_token=''
+report_dir=''
