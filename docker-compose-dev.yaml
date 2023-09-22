@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com:8929';
+        gitlab_rails['gitlab_shell_ssh_port'] = 2224;
+        gitlab_rails['initial_root_password'] = "initialpassword";
+    ports:
+      - '8929:8929'
+      - '2224:22'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    shm_size: '256m'
+
+  testrunner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    entrypoint: [ '/bin/sh', '-c' ]
+    environment: []
+    depends_on:
+      gitlab:
+        condition: service_completed_successfully
+    command:
+      - pytest -m e2e
