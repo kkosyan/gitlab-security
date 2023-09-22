@@ -4,6 +4,11 @@ from gitlab.v4.objects.projects import Project
 
 
 class MembersExtractor:
+    columns = [
+        'project_id',
+        'project_name',
+        'project_members',
+    ]
     def __init__(self, url: str, token: str):
         self._url = url
         self._token = token
@@ -26,4 +31,4 @@ class MembersExtractor:
             (project.id, project.path_with_namespace, sorted(self._get_members_names(project=project)))
             for project in projects
         ]
-        return pd.DataFrame.from_records(data)
+        return pd.DataFrame.from_records(data, columns=self.columns)

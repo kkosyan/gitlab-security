@@ -1,3 +1,5 @@
+import pathlib
+
 import dynaconf
 
 from domain.file_writer import ExcelWriter
@@ -16,7 +18,7 @@ class LocalDependencyManager(DependencyManager):
             token=settings.gitlab_token,
         )
         file_writer = ExcelWriter(
-            file_dir=settings.report_dir,
+            file_dir=pathlib.Path(settings.report_dir),
         )
 
         self.extract_project_members = ExtractProjectsMembers(
