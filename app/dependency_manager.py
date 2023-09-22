@@ -19,7 +19,7 @@ class LocalDependencyManager(DependencyManager):
             file_dir=settings.report_dir,
         )
 
-        self.data_emulator_for_single_table = ExtractProjectsMembers(
+        self.extract_project_members = ExtractProjectsMembers(
             members_extractor=members_extractor,
             file_writer=file_writer,
         )
