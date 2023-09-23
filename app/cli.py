@@ -16,7 +16,13 @@ def build_cli() -> click.Command:
 
     @cli.command('extract-projects-members')
     @pass_context
-    def emulate_single_table(context: DependencyManager):
+    def extract_project_members(context: DependencyManager):
         return context.extract_project_members.execute()
+
+    @cli.command('project-members-comparison')
+    @pass_context
+    @click.option('-f', '--file-name', 'file_name', help='Get file name')
+    def project_members_comparison(context: DependencyManager, file_name: str):
+        return context.project_members_comparison.execute(file_name=file_name)
 
     return cli
