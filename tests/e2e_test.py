@@ -28,7 +28,11 @@ extract_projects_members = ExtractProjectsMembers(
 
 @pytest.mark.e2e
 class TestExtractProjectMembers:
-    expected_result = pd.DataFrame({})
+    expected_result = pd.DataFrame.from_records([
+        (1, 'root/project1', 'root, user1, user2, user3'),
+        (2, 'root/project2', 'root, user1, user2'),
+        (3, 'root/project3', 'root, user1'),
+    ], columns=['project_id', 'project_name', 'project_members'])
 
     @staticmethod
     def prepare_environment():
@@ -75,6 +79,7 @@ class TestExtractProjectMembers:
         self.prepare_environment()
         extract_projects_members.execute()
 
-        result = pd.read_excel(settings.report_dir / f'projects_members_on_{date.today()}.xlsx')
+        result = pd.read_excel(pathlib.Path(settings.report_dir) / f'projects_members_on_{date.today()}.xlsx',
+                               engine='openpyxl')
 
-        assert result == self.expected_result
+        pd.testing.assert_frame_equal(result, self.expected_result)
